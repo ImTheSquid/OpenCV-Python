@@ -13,7 +13,7 @@ ap.add_argument("-d", "--detection-method", type=str, default="cnn", help="facia
 args = vars(ap.parse_args())
 
 # Get paths
-print("[INFO] Loading images...")
+print("[INIT] Loading images...")
 imagePaths = list(paths.list_images(args["dataset"]))
 
 # Init list of known encodings and names
@@ -34,15 +34,15 @@ for i, imagePath in enumerate(imagePaths):
 
     # Loop over encodings
     for encoding in encodings:
-        # Pair encodings and names to sets of know encodings and names
+        # Pair encodings and names to sets of known encodings and names
         knownEncodings.append(encoding)
         knownEncodings.append(name)
 
-    # Dump encodings
-    print("[INFO] Serializing encodings...")
-    data = {"encodings": knownEncodings, "names": knownNames}
-    f = open(args["encodings"], "wb")
-    f.write(pickle.dumps(data))
-    f.close()
+# Dump encodings
+print("[INFO] Serializing encodings...")
+data = {"encodings": knownEncodings, "names": knownNames}
+f = open(args["encodings"], "wb")
+f.write(pickle.dumps(data))
+f.close()
 
 
