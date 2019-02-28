@@ -42,25 +42,28 @@ while True:
     # Loop over faces
     for encoding in encodings:
         # Attempt to match
-        matches = face_recognition.compare_faces(data["encodings"], encoding)
-        name = "Unknown"
+        try:
+            matches = face_recognition.compare_faces(data["encodings"], encoding)
+            name = "Unknown"
 
-        # Check for match
-        if True in matches:
-            # Find index of all match faces and use dictionary to store number of times a face was found
-            matchedIdxs = [i for(i, b) in enumerate(matches) if b]
-            counts = {}
+            # Check for match
+            if True in matches:
+                # Find index of all match faces and use dictionary to store number of times a face was found
+                matchedIdxs = [i for(i, b) in enumerate(matches) if b]
+                counts = {}
 
-            # Loop over matched indexes and maintain count per face
-            for i in matchedIdxs:
-                name = data["names"][i]
-                counts[name] = counts.get(name, 0) + 1
+                # Loop over matched indexes and maintain count per face
+                for i in matchedIdxs:
+                    name = data["names"][i]
+                    counts[name] = counts.get(name, 0) + 1
 
-            # Determine face with largest number of votes
-            name = max(counts, key=counts.get())
+                # Determine face with largest number of votes
+                name = max(counts, key=counts.get())
 
-        # Update list of names
-        names.append(name)
+            # Update list of names
+            names.append(name)
+        except ValueError:
+            print("[ERROR] No faces detected")
 
     # loop over the recognized faces
     for ((top, right, bottom, left), name) in zip(boxes, names):
